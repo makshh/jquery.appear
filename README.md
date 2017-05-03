@@ -20,7 +20,7 @@ Will fire 'appear' event with accuracy 50px in X and 100px in Y
 
     $('#foo').appear(function() {
       $(this).text('Hello world');
-    },{accX: 50, accY: 100, disappearOffset: 0}, function() {
+    },{one: false, accX: 50, accY: 100, disappearOffset: 0}, function() {
       // your code, disappear fires with default offset - 200px
     });
 
