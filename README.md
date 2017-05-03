@@ -16,4 +16,12 @@ This plugin can be used to prevent unnecessary requests for content that's hidde
     },{accX: 50, accY: 100});
 Will fire 'appear' event with accuracy 50px in X and 100px in Y
 
+## Usage with disappear callback function
+
+    $('#foo').appear(function() {
+      $(this).text('Hello world');
+    },{accX: 50, accY: 100, disappearOffset: 0}, function() {
+      // your code, disappear fires with default offset - 200px
+    });
+
 http://bas2k.ru/
