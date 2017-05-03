@@ -9,7 +9,7 @@
  * Licensed under the MIT license (http://www.opensource.org/licenses/mit-license.php)
  */
 (function($) {
-    $.fn.appear = function(fn, options, disappear) {
+    $.fn.appear = function(fn, options) {
 
         var settings = $.extend({
 
@@ -22,7 +22,8 @@
             // X & Y accuracy
             accX: 0,
             accY: 0,
-            disappearOffset: 200
+            disappearOffset: 200,
+            onDisappear: null
 
         }, options);
 
@@ -82,16 +83,19 @@
 
                 }
 
-                var disoff = settings.disappearOffset;
+                if(settings.onDisappear) {
+                  var disoff = settings.disappearOffset;
 
-                if(!(y + th + disoff >= b &&
-                     y <= b + wh + disoff &&
-                     x + tw + disoff >= a &&
-                     x <= a + ww + disoff)) {
+                  if(!(y + th + disoff >= b &&
+                       y <= b + wh + disoff &&
+                       x + tw + disoff >= a &&
+                       x <= a + ww + disoff)) {
 
-                    //trigger the custom disappear event
-                    t.trigger('disappear', settings.data);
+                      //trigger the custom disappear event
+                      t.trigger('disappear', settings.data);
+                  }
                 }
+
             };
 
             //create a modified fn with some additional logic
@@ -113,20 +117,12 @@
                 fn.apply(this, arguments);
             };
 
-            //create a modified fn with some additional logic
-            var modifiedFnDisappear = function() {
-
-                //trigger the original fn
-                disappear.apply(this, arguments);
-
-            };
-
             //bind the modified fn to the element
             if (settings.one) t.one('appear', settings.data, modifiedFn);
             else t.on('appear', settings.data, modifiedFn);
 
-            if (settings.one) t.one('disappear', settings.data, modifiedFnDisappear);
-            else t.on('disappear', settings.data, modifiedFnDisappear);
+            if (settings.one) t.one('disappear', settings.data, settings.onDisappear);
+            else t.on('disappear', settings.data, settings.onDisappear);
 
             //check whenever the window scrolls
             w.scroll(check);
